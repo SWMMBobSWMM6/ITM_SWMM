@@ -1,0 +1,220 @@
+[TITLE]
+;;Project Title/Notes
+
+[OPTIONS]
+;;Option             Value
+FLOW_UNITS           CMS
+INFILTRATION         HORTON
+FLOW_ROUTING         ITM
+LINK_OFFSETS         DEPTH
+MIN_SLOPE            0
+ALLOW_PONDING        NO
+SKIP_STEADY_STATE    NO
+
+START_DATE           03/27/2012
+START_TIME           00:00:00
+REPORT_START_DATE    03/27/2012
+REPORT_START_TIME    00:00:00
+END_DATE             03/27/2012
+END_TIME             08:00:00
+SWEEP_START          01/01
+SWEEP_END            12/31
+DRY_DAYS             0
+REPORT_STEP          00:01:00
+WET_STEP             00:05:00
+DRY_STEP             01:00:00
+ROUTING_STEP         0:00:01 
+RULE_STEP            00:00:00
+
+INERTIAL_DAMPING     NONE
+NORMAL_FLOW_LIMITED  BOTH
+FORCE_MAIN_EQUATION  H-W
+VARIABLE_STEP        0.75
+LENGTHENING_STEP     0
+MIN_SURFAREA         1.167
+MAX_TRIALS           8
+HEAD_TOLERANCE       0.0015
+SYS_FLOW_TOL         5
+LAT_FLOW_TOL         5
+MINIMUM_STEP         0.5
+THREADS              1
+
+[EVAPORATION]
+;;Data Source    Parameters
+;;-------------- ----------------
+CONSTANT         0.0
+DRY_ONLY         NO
+
+[JUNCTIONS]
+;;Name           Elevation  MaxDepth   InitDepth  SurDepth   Aponded    Amanhole  
+;;-------------- ---------- ---------- ---------- ---------- ---------- ----------
+04               314.7      25         0          0          0          500       
+03               300.798    17.48      0          0          0          2000      
+02               301.264    16.95      0          0          0          0         
+01               301.036    17.18      0          0          0          0         
+OCC              300.929    16         0          0          0          20        
+DCB              300.838    16         0          0          0          0         
+TP2              450        15         0          0          0          20000     
+TP1              420        15         0          0          0          4000      
+
+[STORAGE]
+;;Name           Elev.    MaxDepth   InitDepth  Shape      Curve Type/Params            SurDepth  Fevap    Psi      Ksat     IMD     
+;;-------------- -------- ---------- ----------- ---------- ---------------------------- --------- --------          -------- --------
+StorageTank      294.6    5          0          TABULAR    StorageTank                  0         0       
+
+[CONDUITS]
+;;Name           From Node        To Node          Length     Roughness  InOffset   OutOffset  InitFlow   MaxFlow    InitDepth 
+;;-------------- ---------------- ---------------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+60               04               03               1100       0.013      0          7          0          0          CONSTANT    0         
+80               02               01               600        0.013      0          0          0          0          CONSTANT    0         
+90               01               OCC              280        0.013      0          0          0          0          CONSTANT    0         
+100              OCC              DCB              240        0.013      0          0          0          0          CONSTANT    0         
+70               03               02               1000       0.013      1          0          0          0          CONSTANT    0         
+110              DCB              StorageTank      240        0.013      0          6          0          0          CONSTANT    0         
+
+[PUMPS]
+;;Name           From Node        To Node          Pump Curve       Status   Sartup Shutoff 
+;;-------------- ---------------- ---------------- ---------------- ------ -------- --------
+P11              03               TP1              PumpCurve        ON       0        0       
+P12              03               TP1              PumpCurve        ON       0        0       
+P13              03               TP1              PumpCurve        ON       0        0       
+P14              03               TP1              PumpCurve        ON       0        0       
+P21              StorageTank      TP2              PumpCurve        ON       0        0       
+P22              StorageTank      TP2              PumpCurve        ON       0        0       
+P23              StorageTank      TP2              PumpCurve        ON       0        0       
+P24              StorageTank      TP2              PumpCurve        ON       0        0       
+P25              StorageTank      TP2              PumpCurve        ON       0        0       
+
+[XSECTIONS]
+;;Link           Shape        Geom1            Geom2      Geom3      Geom4      Barrels    Culvert   
+;;-------------- ------------ ---------------- ---------- ---------- ---------- ---------- ----------
+60               CIRCULAR     4.2672           0          0          0          1                    
+80               CIRCULAR     4.2672           0          0          0          1                    
+90               CIRCULAR     4.2672           0          0          0          1                    
+100              CIRCULAR     4.816            0          0          0          1                    
+70               CIRCULAR     4.2672           0          0          0          1                    
+110              CIRCULAR     4.816            0          0          0          1                    
+
+[LOSSES]
+;;Link           Kentry     Kexit      Kavg       Flap Gate  Seepage   
+;;-------------- ---------- ---------- ---------- ---------- ----------
+60               0.5        0.5        0          NO         0         
+80               0.5        0.5        0          NO         0         
+90               0.5        0.5        0          NO         0         
+100              0.5        0.5        0          NO         0         
+70               0.5        0.5        0          NO         0         
+110              0.5        0.5        0          NO         0         
+
+[INFLOWS]
+;;Node           Constituent      Time Series      Type     Mfactor  Sfactor  Baseline Pattern
+;;-------------- ---------------- ---------------- -------- -------- -------- -------- --------
+04               FLOW             Inflow           FLOW     1.0      2                
+
+[CURVES]
+;;Name           Type       X-Value    Y-Value   
+;;-------------- ---------- ---------- ----------
+ControlCurvePumpP1 Control    0          0         
+ControlCurvePumpP1            4.99       0         
+ControlCurvePumpP1            5.00       1         
+ControlCurvePumpP1            10         1         
+ControlCurvePumpP1            100        1         
+;
+ControlCurvePumpP2P3 Control    0          0         
+ControlCurvePumpP2P3            3.99       0         
+ControlCurvePumpP2P3            4.00       1         
+ControlCurvePumpP2P3            5          1         
+ControlCurvePumpP2P3            8          1         
+ControlCurvePumpP2P3            10         1         
+;
+PumpCurve        Pump5      1          2.815     
+PumpCurve                   20         2.81      
+PumpCurve                   50         2.8       
+PumpCurve                   100        2.7       
+PumpCurve                   140        2.5       
+PumpCurve                   170        2         
+PumpCurve                   190        1         
+PumpCurve                   200        0         
+;
+StorageTank      Storage    0          25000     
+StorageTank                 6          25000     
+;
+WeirStorage      Storage    0          500000    
+WeirStorage                 50         500000    
+
+[TIMESERIES]
+;;Name           Date       Time       Value     
+;;-------------- ---------- ---------- ----------
+Inflow                      0          0         
+Inflow                      0:30       12        
+Inflow                      1:00       24        
+Inflow                      1:30       12        
+Inflow                      2:00       0         
+
+[REPORT]
+;;Reporting Options
+SUBCATCHMENTS ALL
+NODES ALL
+LINKS ALL
+
+[ITM_OPTIONS]
+;;Option             Value
+MAX_TIME_STEP        60
+MAX_NUM_CELLS        100
+MAX_NUM_PLOT_CELLS   100
+REF_DEPTH_RATIO      95
+WAVE_CELERITY        200
+INITIAL_STAGE        
+DEBUG_FILE           "DEbug1.txt"
+
+[ITM_CONTROLS]
+;;Link           Setting  Control Type     Control Series   Control Node     Control Curve   
+;;-------------- -------- ---------------- ---------------- ---------------- ----------------
+P11              0        DEPTH            *                03               ControlCurvePumpP1
+P12              0        DEPTH            *                03               ControlCurvePumpP1
+P13              0        DEPTH            *                03               ControlCurvePumpP1
+P14              0        DEPTH            *                03               ControlCurvePumpP1
+P21              0        DEPTH            *                StorageTank      ControlCurvePumpP2P3
+P22              0        DEPTH            *                StorageTank      ControlCurvePumpP2P3
+P23              0        DEPTH            *                StorageTank      ControlCurvePumpP2P3
+P24              0        DEPTH            *                StorageTank      ControlCurvePumpP2P3
+P25              0        DEPTH            *                StorageTank      ControlCurvePumpP2P3
+
+[TAGS]
+
+[MAP]
+DIMENSIONS 4660.958 1555.870 7651.062 3663.945
+Units      None
+
+[COORDINATES]
+;;Node           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+04               4796.872           3568.123          
+03               5155.494           3186.112          
+02               5681.063           2657.807          
+01               6334.441           2248.062          
+OCC              6777.409           2115.172          
+DCB              7109.635           2059.801          
+TP2              6621.533           1779.274          
+TP1              5049.687           2632.486          
+StorageTank      7229.952           1662.819          
+
+[VERTICES]
+;;Link           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+80               5858.250           2502.769          
+80               6146.179           2331.118          
+
+[Polygons]
+;;Storage Node   X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+StorageTank      7229.952           1662.819          
+
+[LABELS]
+;;X-Coord          Y-Coord            Label           
+4874.707           3630.672           "Inflow" "" "Arial" 16 0 0
+
+
+[PROFILES]
+;;Name           Links     
+;;-------------- ----------
+"                " 110 3

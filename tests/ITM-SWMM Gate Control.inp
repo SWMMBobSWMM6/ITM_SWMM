@@ -1,0 +1,190 @@
+[TITLE]
+;;Project Title/Notes
+
+[OPTIONS]
+;;Option             Value
+FLOW_UNITS           CMS
+INFILTRATION         HORTON
+FLOW_ROUTING         ITM
+LINK_OFFSETS         DEPTH
+MIN_SLOPE            0
+ALLOW_PONDING        NO
+SKIP_STEADY_STATE    NO
+
+START_DATE           03/27/2012
+START_TIME           00:00:00
+REPORT_START_DATE    03/27/2012
+REPORT_START_TIME    00:00:00
+END_DATE             03/27/2012
+END_TIME             06:00:00
+SWEEP_START          01/01
+SWEEP_END            12/31
+DRY_DAYS             0
+REPORT_STEP          00:05:00
+WET_STEP             00:05:00
+DRY_STEP             01:00:00
+ROUTING_STEP         0:00:01 
+RULE_STEP            00:00:00
+
+INERTIAL_DAMPING     NONE
+NORMAL_FLOW_LIMITED  BOTH
+FORCE_MAIN_EQUATION  H-W
+VARIABLE_STEP        0.75
+LENGTHENING_STEP     0
+MIN_SURFAREA         1.167
+MAX_TRIALS           8
+HEAD_TOLERANCE       0.0015
+SYS_FLOW_TOL         5
+LAT_FLOW_TOL         5
+MINIMUM_STEP         0.5
+THREADS              1
+
+[EVAPORATION]
+;;Data Source    Parameters
+;;-------------- ----------------
+CONSTANT         0.0
+DRY_ONLY         NO
+
+[JUNCTIONS]
+;;Name           Elevation  MaxDepth   InitDepth  SurDepth   Aponded    Amanhole  
+;;-------------- ---------- ---------- ---------- ---------- ---------- ----------
+04               304.7      50         0          0          0          500       
+03               301.798    17.48      0          0          0          0         
+02               301.264    16.95      0          0          0          0         
+01               301.036    17.18      0          0          0          0         
+OCC              300.929    16         0          0          0          10        
+DCB              300.838    16         0          0          0          0         
+
+[STORAGE]
+;;Name           Elev.    MaxDepth   InitDepth  Shape      Curve Type/Params            SurDepth  Fevap    Psi      Ksat     IMD     
+;;-------------- -------- ---------- ----------- ---------- ---------------------------- --------- --------          -------- --------
+StorageTank      297.835  3          0          TABULAR    StorageTank                  3         0       
+Outfall          0        10         0          TABULAR    WeirStorage                  0         0       
+
+[CONDUITS]
+;;Name           From Node        To Node          Length     Roughness  InOffset   OutOffset  InitFlow   MaxFlow    InitDepth 
+;;-------------- ---------------- ---------------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+60               04               03               1100       0.013      0          0          0          0          CONSTANT    0         
+80               02               01               600        0.013      0          0          0          0          CONSTANT    0         
+90               01               OCC              280        0.013      0          0          0          0          CONSTANT    0         
+100              OCC              DCB              240        0.013      0          0          0          0          CONSTANT    0         
+70               03               02               1000       0.013      0          0          0          0          CONSTANT    0         
+110              DCB              StorageTank      240        0.013      0          0          0          0          CONSTANT    0         
+
+[WEIRS]
+;;Name           From Node        To Node          Type         CrestHt    Qcoeff     Gated    EndCon   EndCoeff   Surcharge  RoadWidth  RoadSurf   Coeff. Curve
+;;-------------- ---------------- ---------------- ------------ ---------- ---------- -------- -------- ---------- ---------- ---------- ---------- ----------------
+Gate             OCC              Outfall          TRANSVERSE   0          3.33       NO       0        0          YES       
+
+[XSECTIONS]
+;;Link           Shape        Geom1            Geom2      Geom3      Geom4      Barrels    Culvert   
+;;-------------- ------------ ---------------- ---------- ---------- ---------- ---------- ----------
+60               CIRCULAR     4.2672           0          0          0          1                    
+80               CIRCULAR     4.2672           0          0          0          1                    
+90               CIRCULAR     4.2672           0          0          0          1                    
+100              CIRCULAR     4.816            0          0          0          1                    
+70               CIRCULAR     4.2672           0          0          0          1                    
+110              CIRCULAR     4.816            0          0          0          1                    
+Gate             RECT_OPEN    1                3          0          0         
+
+[LOSSES]
+;;Link           Kentry     Kexit      Kavg       Flap Gate  Seepage   
+;;-------------- ---------- ---------- ---------- ---------- ----------
+60               0.5        0.5        0          NO         0         
+80               0.5        0.5        0          NO         0         
+90               0.5        0.5        0          NO         0         
+100              0.5        0.5        0          NO         0         
+70               0.5        0.5        0          NO         0         
+110              0.5        0.5        0          NO         0         
+
+[INFLOWS]
+;;Node           Constituent      Time Series      Type     Mfactor  Sfactor  Baseline Pattern
+;;-------------- ---------------- ---------------- -------- -------- -------- -------- --------
+04               FLOW             Inflow           FLOW     1.0      1                
+
+[CURVES]
+;;Name           Type       X-Value    Y-Value   
+;;-------------- ---------- ---------- ----------
+CC1              Control    0          0         
+CC1                         0.50       0         
+CC1                         0.51       1         
+CC1                         3          1         
+;
+StorageTank      Storage    0          2000      
+StorageTank                 5          2000      
+;
+WeirStorage      Storage    0          500000    
+WeirStorage                 50         500000    
+
+[TIMESERIES]
+;;Name           Date       Time       Value     
+;;-------------- ---------- ---------- ----------
+Inflow                      0          0         
+Inflow                      0:30       3         
+Inflow                      1:00       6         
+Inflow                      1:30       3         
+Inflow                      2:00       0         
+
+[REPORT]
+;;Reporting Options
+SUBCATCHMENTS ALL
+NODES ALL
+LINKS ALL
+
+[ITM_OPTIONS]
+;;Option             Value
+MAX_TIME_STEP        60
+MAX_NUM_CELLS        50
+MAX_NUM_PLOT_CELLS   50
+REF_DEPTH_RATIO      95
+WAVE_CELERITY        200
+INITIAL_STAGE        
+
+[ITM_CONTROLS]
+;;Link           Setting  Control Type     Control Series   Control Node     Control Curve   
+;;-------------- -------- ---------------- ---------------- ---------------- ----------------
+Gate             1.0      DEPTH            *                StorageTank      CC1             
+
+[TAGS]
+
+[MAP]
+DIMENSIONS 4671.326 1555.870 7433.332 3663.945
+Units      None
+
+[COORDINATES]
+;;Node           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+04               4796.872           3568.123          
+03               5155.494           3186.112          
+02               5681.063           2657.807          
+01               6334.441           2248.062          
+OCC              6777.409           2115.172          
+DCB              7109.635           2059.801          
+StorageTank      7307.786           1651.692          
+Outfall          6886.235           2531.237          
+
+[VERTICES]
+;;Link           X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+80               5858.250           2502.769          
+80               6146.179           2331.118          
+
+[Polygons]
+;;Storage Node   X-Coord            Y-Coord           
+;;-------------- ------------------ ------------------
+StorageTank      7307.786           1651.692          
+Outfall          6886.235           2531.237          
+
+[LABELS]
+;;X-Coord          Y-Coord            Label           
+6902.177           2340.244           "Gate" "" "Arial" 10 0 0
+4875.616           3631.359           "Inflow" "" "Arial" 10 0 0
+6853.079           1683.823           "Storage Tank" "" "Arial" 10 0 0
+6767.345           2695.709           "Bypass Outfall" "" "Arial" 10 0 0
+6908.681           2416.957           "Bypass" "" "Arial" 10 0 0
+
+
+[PROFILES]
+;;Name           Links     
+;;-------------- ----------
+"                " 110 3
